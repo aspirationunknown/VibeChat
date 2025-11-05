@@ -1,0 +1,30 @@
+flowchart LR
+  subgraph Client
+    UI[Chat UI]
+    WS[WebSocket Client]
+  end
+
+  subgraph Edge
+    LB[API Gateway / Load Balancer]
+  end
+
+  subgraph Backend
+    CS[Chat Server]
+    AUTH[Auth Service]
+    MQ[(Message Broker)]
+    DB[(SQL/NoSQL DB)]
+    CACHE[(Cache)]
+  end
+
+  UI --> WS
+  WS -->|WSS| LB
+  LB --> CS
+  CS --> AUTH
+  CS --> MQ
+  MQ --> CS
+  CS --> DB
+  CS --> CACHE
+  CS -->|broadcast events| LB
+  LB --> WS
+
+  
